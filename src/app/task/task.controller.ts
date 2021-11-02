@@ -1,29 +1,13 @@
-import { Body, Controller, Get, Patch, Post, Put } from '@nestjs/common';
-import { CreateTaskDto, UpdateTaskDto, TaskResponseDto } from './dto/task.dto';
+import { Controller, Get, Param } from '@nestjs/common';
+import { TaskResponseDto } from './dto/task.dto';
+import { TaskService } from './task.service';
 
 @Controller('task')
 export class TaskController {
-  @Get()
-  getTaskOf(): TaskResponseDto[] {
-    return ['Task of user'];
-  }
+  constructor(private taskService: TaskService) {}
 
-  @Post()
-  // eslint-disable-next-line prettier/prettier
-  createTask(
-      @Body() body:CreateTaskDto
-  ) {
-    console.log(body);
-    return `Hello ${body.name} with function ${body.description}`;
-  }
-
-  @Put()
-  updateTaskOf(@Body() body: UpdateTaskDto) {
-    return 'Remove task of';
-  }
-
-  @Patch()
-  updateTask() {
-    return 'Update task';
+  @Get('/:userId')
+  getTaskOf(@Param() params: { userId: number }): TaskResponseDto {
+    return this.taskService.getTaskOf(params.userId);
   }
 }

@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TaskController } from './task/task.controller';
-import { UserTaskController } from './task/user.task.controller';
-import { UserController } from './user/student.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [],
-  controllers: [UserController, TaskController, UserTaskController],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://toavinaTaskify:superPassword@cluster0.vl4e1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    ),
+    UserModule,
+  ],
 })
 export class AppModule {}
