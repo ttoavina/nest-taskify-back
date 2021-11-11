@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { User } from './user.model';
 
 @Injectable()
-export class UserServices {
+export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   async addUser(username: string, password: string, task: []) {
@@ -19,4 +19,10 @@ export class UserServices {
     return result;
     
   }
+
+  async findOne(username:string): Promise<User | null>{
+    const user = await this.userModel.findOne({username : username}).exec()
+    return user
+  }
+
 }
