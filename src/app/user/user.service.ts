@@ -17,7 +17,6 @@ export class UserService {
     
     const result = await newUser.save();
     return result;
-    
   }
 
   async findOne(username:string): Promise<User | null>{

@@ -1,13 +1,31 @@
-import { Controller, Get, Param } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { userInfo } from 'os';
+import { CurrentUser } from 'src/lib/current.user';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TaskResponseDto } from './dto/task.dto';
+import { Task } from './task.model';
 import { TaskService } from './task.service';
 
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
-  @Get('/:userId')
-  getTaskOf(@Param() params: { userId: number }): TaskResponseDto {
-    return this.taskService.getTaskOf(params.userId);
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  getTaskOf(@CurrentUser() user) {
+    return this.taskService.getTaskOf(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('new')
+  createTask(
+    @Body() body: Task,
+    @CurrentUser() user: any,
+  ) {
+    const task = body;
+    task.user = user.id;
+    return this.taskService.createTask(task)
   }
 }

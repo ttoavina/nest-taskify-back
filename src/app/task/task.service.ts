@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { tasks } from 'src/database';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { TaskResponseDto } from './dto/task.dto';
+import { Task } from './task.model';
 
 @Injectable()
 export class TaskService {
-  private tasks = tasks;
-  getTaskOf(id: number): TaskResponseDto {
-    return this.tasks.filter((value) => {
-      if (value.id == id) {
-        return value;
-      }
-    });
+  constructor(@InjectModel('Tasks') private taskModel: Model<Task>) {}
+
+  async getTaskOf(id: string) {
+    const result = await this.taskModel.find({ id: id }).exec();
+    return result;
+  }
+
+  async createTask(data: Task) {
+    const newTask = new this.taskModel(data);
+    const result = await newTask.save();
+
+    return result;
   }
 }
