@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {
+  Body,
   Controller,
   createParamDecorator,
   ExecutionContext,
@@ -7,6 +8,7 @@ import {
   Get,
   Inject,
   Param,
+  Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/lib/current.user';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { User } from './user.model';
 import { UserService } from './user.service';
 // Endpoint: /users
 
@@ -23,9 +26,13 @@ export class UserController {
     private userService: UserService,
   ) {}
 
-  @Get('signup/:user/:password')
-  addUser(@Param('user') user: string, @Param('password') password: string) {
-    return this.userService.addUser(user, password, []);
+  @Post('signup/')
+  addUser(
+    @Body() user: User,
+  ) {
+    console.log(user);
+    
+    return this.userService.addUser(user);
   }
 
   @Get('google/signup/')

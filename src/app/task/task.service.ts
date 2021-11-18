@@ -9,7 +9,7 @@ export class TaskService {
   constructor(@InjectModel('Tasks') private taskModel: Model<Task>) {}
 
   async getTaskOf(id: string) {
-    const result = await this.taskModel.find({ id: id }).exec();
+    const result = await this.taskModel.find({ user: id }).exec();
     return result;
   }
 

@@ -8,10 +8,9 @@ import { LocalAuthGuard } from "./local-auth.guard";
 export class AuthController {
     constructor(private authService: AuthService) {}
 
-    @UseGuards(LocalAuthGuard)
     @Post('login')
     login(@Request() req) {
-        return this.authService.login(req.user)
+        return this.authService.validateUser(req.body.email , req.body.password)
     }
 
     @Get('google')

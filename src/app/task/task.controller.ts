@@ -15,6 +15,7 @@ export class TaskController {
   @UseGuards(JwtAuthGuard)
   @Get('all')
   getTaskOf(@CurrentUser() user) {
+    console.log(user);
     return this.taskService.getTaskOf(user.id);
   }
 
@@ -24,6 +25,9 @@ export class TaskController {
     @Body() body: Task,
     @CurrentUser() user: any,
   ) {
+    console.log('BODY');
+    console.log(user);
+    
     const task = body;
     task.user = user.id;
     return this.taskService.createTask(task)

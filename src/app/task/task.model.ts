@@ -6,13 +6,12 @@ export const TaskSchema = new mongoose.Schema({
     beginDate: {type: Date , required: true},
     endDate: {type: Date , required: true},
     taskType: {type: String , required: true},
-    desctiption: {type: String}
+    description: {type: String}
 })
 
 export interface Task{
     user: string,
     beginDate: Date,
     endDate: Date,
-    taskType: string,
-    description: string
+    taskType: string
 }
